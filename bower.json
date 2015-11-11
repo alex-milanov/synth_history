@@ -1,0 +1,25 @@
+{
+  "name": "synth_lib",
+  "version": "0.1.0",
+  "homepage": "https://github.com/alex-milanov/synth_history",
+  "authors": [
+    "Chris Lowis",
+    "Alex Milanov"
+  ],
+  "description": "synth library based on examples from talk",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.10.1"
+  }
+}

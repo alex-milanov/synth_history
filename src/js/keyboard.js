@@ -22,7 +22,7 @@ Keyboard.prototype.keydown = function(e) {
 Keyboard.prototype.keyup = function(e) {
   if (e.repeat == false) {
     var note = this.keycodeToNote(e.keyCode);
-    if (note) { this.onKeyUp(note); };
+    if (note && this.onKeyUp) { this.onKeyUp(note); };
   };
 };
 

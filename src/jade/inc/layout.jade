@@ -1,0 +1,25 @@
+block vars
+html
+	head
+		title= title
+		link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Orbitron')
+		link(rel='stylesheet', type='text/css', href='/css/style.css')
+		block style
+	body
+		header
+			h1: a(href="/") Synth Lib Examples:
+			ul
+				li: a(href="/theremin/") Theremin
+				li: a(href="/additive_synthesis/") Additive Synthesis
+				li: a(href="/subtractive_synthesis/") Subtractive Synthesis
+				li: a(href="/fm_synthesis/") FM Synthesis
+				li: a(href="/granular_synthesis/") Granular Synthesis
+				li: a(href="/sampler/") Sampler
+		block content
+
+		//- lib
+		script(type="text/javascript" src="/lib/lodash/lodash.js")
+
+		//- app
+		script(type="text/javascript" src="/js/keyboard.js")
+		block scripts

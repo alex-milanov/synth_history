@@ -3,6 +3,7 @@ var context = new AudioContext;
 
 var Theremin = function(context) {
    this.context = context;
+   this.setup();
 };
 
 Theremin.prototype.playNote = function(note) {
