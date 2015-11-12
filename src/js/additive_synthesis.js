@@ -10,7 +10,12 @@ var Partial = function(context) {
   this.gain = context.createGain();
 
   this.osc.connect(this.gain);
-  this.gain.connect(context.destination);
+
+  this.volume = context.createGain();
+  this.volume.gain.value = 0.1;
+
+  this.gain.connect(this.volume);
+  this.volume.connect(context.destination);
 };
 
 Partial.prototype.start = function() {

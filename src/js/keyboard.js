@@ -2,6 +2,63 @@ var Keyboard = function(element) {
   element.addEventListener("keydown", this.keydown.bind(this), false);
   element.addEventListener("keyup", this.keyup.bind(this), false);
   this.octave = 4;
+
+  var scope = this;
+
+  if (navigator.requestMIDIAccess)
+    navigator.requestMIDIAccess().then( onMIDIInit, onMIDIReject );
+  else
+    alert("No MIDI support present in your browser.  You're gonna have a bad time.")
+
+  function numberToNote(number) {
+    var notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    var octave = parseInt(number/12);
+    var step = number-octave*12;
+    var pitch = notes[step];
+    return {pitch: pitch+""+octave, midi: number};
+  }
+
+  function hookUpMIDIInput() {
+    var haveAtLeastOneDevice=false;
+      var inputs=midiAccess.inputs.values();
+      for ( var input = inputs.next(); input && !input.done; input = inputs.next()) {
+        input.value.onmidimessage = MIDIMessageEventHandler;
+        haveAtLeastOneDevice = true;
+      }
+      var badtime = document.getElementById("badtime");
+      if (badtime)
+        badtime.style.visibility = haveAtLeastOneDevice ?
+          "hidden" : "visible";
+  }
+  function onMIDIInit(midi) {
+    midiAccess = midi;
+    hookUpMIDIInput();
+    midiAccess.onstatechange=hookUpMIDIInput;
+  }
+  function onMIDIReject(err) {
+    alert("The MIDI system failed to start.  You're gonna have a bad time.");
+  }
+  function MIDIMessageEventHandler(event) {
+    // Mask off the lower nibble (MIDI channel, which we don't care about)
+
+    if(event.data[1]){
+      var number = event.data[1];
+      var note = numberToNote(number);
+    
+      switch (event.data[0] & 0xf0) {
+        case 0x90:
+          if (event.data[2]!=0) {  // if velocity != 0, this is a note-on message
+            scope.onKeyDown(note);
+            return;
+          }
+          // if velocity == 0, fall thru: it's a note-off.  MIDI's weird, ya'll.
+        case 0x80:
+          scope.onKeyUp(note);
+          return;
+      }
+    }
+  }
+
 };
 
 Keyboard.prototype.keydown = function(e) {
